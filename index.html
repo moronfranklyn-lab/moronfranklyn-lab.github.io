@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ethan — 把 AI 做成可用产品</title>
-  <meta name="description" content="Ethan，独立开发者、MotoViz 项目主负责人。通过具体项目实践 AI 产品管理。">
+  <meta name="description" content="Ethan，AI 产品经理与独立开发者。从一线零售运营走向 AI 产品落地，拥有 AI 巡店、企业 AI 工作系统与教育 AI 应用经验，独立开发 AI 调酒伙伴「小杯」。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
@@ -133,75 +133,90 @@
       position: relative;
     }
 
-    /* ===== Scroll Reveal System ===== */
-    .reveal {
+    /* ===== Section entrance cascade =====
+       Adapted from pirsch.io: a section enters as a staircase
+       (badge → title → lede → content), 90ms apart, 32px rise + fade.
+       Keyframes instead of transitions, so component hover transitions survive. */
+    @keyframes cascade-up {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes cascade-scale {
+      from { opacity: 0; transform: scale(0.94) translateY(24px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes cascade-left {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes cascade-right {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .reveal,
+    .reveal-scale,
+    .reveal-left,
+    .reveal-right {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
-                  transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Enhanced reveal with scale */
-    .reveal-scale {
-      opacity: 0;
-      transform: scale(0.96) translateY(20px);
-      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
-                  transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      animation: cascade-up 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s) backwards;
     }
 
     .reveal-scale.visible {
       opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-40px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: cascade-scale 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s) backwards;
     }
 
     .reveal-left.visible {
       opacity: 1;
-      transform: translateX(0);
-    }
-
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(40px);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: cascade-left 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s) backwards;
     }
 
     .reveal-right.visible {
       opacity: 1;
-      transform: translateX(0);
+      animation: cascade-right 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) var(--reveal-delay, 0s) backwards;
     }
 
-    .reveal-scale {
+    /* ===== Ambient gradient band =====
+       The connective tissue between sections: a soft highlighter wash that
+       rises into place over 800ms as its section enters. */
+    .section-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 720px;
+      z-index: -1;
+      pointer-events: none;
       opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(48px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      background: radial-gradient(46% 42% at 50% 0%, rgba(255, 218, 110, 0.20), rgba(255, 218, 110, 0) 72%);
     }
 
-    .reveal-scale.visible {
+    .section-glow--left {
+      background: radial-gradient(52% 46% at 24% 0%, rgba(255, 218, 110, 0.20), rgba(255, 218, 110, 0) 72%);
+    }
+
+    .section-glow--right {
+      background: radial-gradient(52% 46% at 76% 0%, rgba(110, 206, 157, 0.18), rgba(110, 206, 157, 0) 72%);
+    }
+
+    .section-glow--mint {
+      background: radial-gradient(46% 42% at 50% 0%, rgba(110, 206, 157, 0.18), rgba(110, 206, 157, 0) 72%);
+    }
+
+    .section-glow.visible {
       opacity: 1;
-      transform: scale(1);
+      transform: translateY(0);
     }
-
-    /* Stagger delays for children */
-    .stagger > *:nth-child(1) { transition-delay: 0s; }
-    .stagger > *:nth-child(2) { transition-delay: 0.08s; }
-    .stagger > *:nth-child(3) { transition-delay: 0.16s; }
-    .stagger > *:nth-child(4) { transition-delay: 0.24s; }
-    .stagger > *:nth-child(5) { transition-delay: 0.32s; }
-    .stagger > *:nth-child(6) { transition-delay: 0.40s; }
 
     /* ===== Animated Ink Line ===== */
     .ink-line {
@@ -552,16 +567,15 @@
 
     /* ===== Hero Section ===== */
     .hero {
-      text-align: center;
-      padding: 120px 0 80px;
+      text-align: left;
+      padding: var(--spacing-64) 0 var(--spacing-48);
       position: relative;
       overflow: hidden;
       background: linear-gradient(180deg, var(--color-cream-paper) 0%, var(--color-card-bg) 100%);
     }
 
-    /* Floating accent dots */
-    .hero::before,
-    .hero::after {
+    /* Floating yellow accent; keep the portrait free of overlays. */
+    .hero::before {
       content: '';
       position: absolute;
       border-radius: 50%;
@@ -576,15 +590,6 @@
       top: 20%;
       left: 8%;
       animation-delay: 0.8s;
-    }
-
-    .hero::after {
-      width: 8px;
-      height: 8px;
-      background: var(--color-mint-signal);
-      top: 30%;
-      right: 10%;
-      animation-delay: 1.2s;
     }
 
     @keyframes floatIn {
@@ -609,17 +614,111 @@
                  float 6s ease-in-out 2.3s infinite;
     }
 
-    .hero::after {
-      animation: floatIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards,
-                 float 8s ease-in-out 2.7s infinite reverse;
-    }
-
     .hero .display-headline {
-      margin-bottom: 16px;
+      margin-bottom: var(--spacing-24);
+      font-size: clamp(36px, 4vw, 56px);
+      line-height: 1.3;
+      text-align: left;
+      text-wrap: balance;
     }
 
-    .hero .section-subhead {
-      margin-bottom: 32px;
+    .hero-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: var(--spacing-64);
+      align-items: center;
+    }
+
+    .hero-copy { min-width: 0; }
+
+    .hero-name {
+      display: block;
+      margin-bottom: var(--spacing-8);
+    }
+
+    .hero .text-highlight {
+      isolation: isolate;
+    }
+
+    .hero .text-highlight::after {
+      width: 100%;
+      height: 0.2em;
+    }
+
+    .hero-role {
+      font-size: var(--text-body);
+      margin-bottom: var(--spacing-16);
+      text-wrap: pretty;
+    }
+
+    .hero-bio {
+      max-width: 62ch;
+      color: var(--color-graphite);
+      font-size: var(--text-body-sm);
+      line-height: 1.8;
+    }
+
+    .hero-bio p + p { margin-top: var(--spacing-8); }
+
+    .hero .btn-group {
+      justify-content: flex-start;
+      margin-top: var(--spacing-32);
+      animation-delay: 0.4s;
+    }
+
+    .hero-portrait {
+      margin: 0;
+      animation-delay: 0.22s;
+    }
+
+    .hero-portrait img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: var(--radius-images);
+      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .hero-portrait img:hover { transform: translateY(-4px); }
+
+    .hero-portrait figcaption {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--spacing-16);
+      margin-top: var(--spacing-16);
+      font-size: var(--text-caption);
+      color: var(--color-graphite);
+    }
+
+    .hero-portrait figcaption span:first-child { color: var(--color-ink); }
+
+    .hero-perspective {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--spacing-32);
+      margin-top: var(--spacing-48);
+      padding-top: var(--spacing-24);
+      border-top: 1px solid var(--color-card-border);
+      animation-delay: 0.5s;
+    }
+
+    .hero-perspective h2 {
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-medium);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .hero-perspective p {
+      color: var(--color-graphite);
+      font-size: var(--text-caption);
+      line-height: 1.7;
+      text-wrap: pretty;
+    }
+
+    .hero a:focus-visible, .nav a:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 5px;
     }
 
     /* Hero entrance animation */
@@ -1217,43 +1316,220 @@
       border-radius: var(--radius-images);
     }
 
-    /* ===== About Section ===== */
-    .about-layout {
-      display: grid;
-      grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-      align-items: center;
-      gap: 48px;
-      max-width: 1000px;
-      margin: 0 auto;
+    /* ===== Portfolio — accordion gallery ===== */
+    .accordion-gallery {
+      --ag-gap: 12px;
+      --ag-radius: var(--radius-images);
+      --ag-height: 480px;
+      --ag-media-size: 640px;
+      --ag-dur: 0.6s;
+      --ag-ease: cubic-bezier(0.23, 1, 0.32, 1);
+      --ag-accent: var(--color-sunshine-highlight);
+      --ag-overlay: #0a0713;
+
+      display: flex;
+      flex-direction: row;
+      gap: var(--ag-gap);
+      height: var(--ag-height);
+      perspective: 1400px;
+      perspective-origin: 50% 50%;
     }
 
-    .about-portrait {
-      width: 100%;
-      height: auto;
-      border: 1px solid var(--color-ink);
-      border-radius: var(--radius-images);
-      transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease;
-    }
+    .ag-panel {
+      --ag-dim: 0.34;
+      --ag-gray: 1;
 
-    .about-portrait:hover {
-      transform: scale(1.01);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .about-content {
+      position: relative;
+      flex: 1 1 0;
       min-width: 0;
+      display: block;
+      overflow: hidden;
+      border-radius: var(--ag-radius);
+      background: var(--ag-overlay);
+      cursor: pointer;
+      text-decoration: none;
+      outline: none;
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      box-shadow: 0 12px 32px -22px rgba(0, 0, 0, 0.45);
+      -webkit-tap-highlight-color: transparent;
+      transition: flex-grow var(--ag-dur) var(--ag-ease),
+                  transform var(--ag-dur) var(--ag-ease),
+                  box-shadow 0.35s ease;
     }
 
-    .about-content p {
-      font-size: var(--text-body);
-      font-weight: var(--font-weight-regular);
+    .ag-panel:hover {
+      box-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.5);
+    }
+
+    .ag-panel:focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 3px;
+    }
+
+    .ag-panel--active {
+      --ag-dim: 0;
+      --ag-gray: 0;
+    }
+
+    .ag-panel--light {
+      background: var(--color-card-bg);
+    }
+
+    /* Small square assets stay whole instead of blowing up to fill the panel */
+    .ag-panel--matte .ag-panel__media img {
+      object-fit: contain;
+    }
+
+    .ag-panel__frame {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      border-radius: inherit;
+    }
+
+    .ag-panel__media {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--ag-media-size);
+      height: 100%;
+      transform: translate(-50%, -50%);
+      filter: grayscale(var(--ag-gray));
+      will-change: transform, filter;
+      transition: transform var(--ag-dur) var(--ag-ease),
+                  filter var(--ag-dur) var(--ag-ease);
+    }
+
+    .ag-panel__media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .ag-panel__overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(10, 7, 19, 0) 45%, rgba(10, 7, 19, 0.72) 100%);
+    }
+
+    .ag-panel__overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--ag-overlay);
+      opacity: var(--ag-dim);
+      transition: opacity var(--ag-dur) var(--ag-ease);
+    }
+
+    .ag-panel__label {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .ag-panel__bar {
+      flex: 0 0 auto;
+      width: 3px;
+      height: 26px;
+      border-radius: 3px;
+      background: var(--ag-accent);
+      box-shadow: 0 0 12px rgba(255, 218, 110, 0.55);
+      opacity: 0;
+      transform: translateX(-14px);
+      transition: opacity calc(var(--ag-dur) * 0.6) var(--ag-ease),
+                  transform calc(var(--ag-dur) * 0.6) var(--ag-ease);
+    }
+
+    .ag-panel__text {
+      font-size: var(--text-subheading);
+      font-weight: var(--font-weight-medium);
+      color: #ffffff;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      opacity: 0;
+      transform: translateX(-14px);
+      transition: opacity calc(var(--ag-dur) * 0.6) var(--ag-ease),
+                  transform calc(var(--ag-dur) * 0.6) var(--ag-ease);
+    }
+
+    .ag-panel--active .ag-panel__bar {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.06s;
+    }
+
+    .ag-panel--active .ag-panel__text {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.12s;
+    }
+
+    .gallery-hint {
+      margin-top: 20px;
+      text-align: center;
+      font-size: var(--text-caption);
       color: var(--color-graphite);
-      line-height: 1.6;
-      margin-bottom: 16px;
     }
 
-    .about-content p:last-child {
-      margin-bottom: 0;
+    /* Stacked accordion replaces the horizontal one on narrow screens */
+    @media (max-width: 960px) {
+      .accordion-gallery {
+        --ag-height: 420px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .accordion-gallery {
+        --ag-gap: 8px;
+        --ag-v-idle: 76px;
+        --ag-v-active: 268px;
+
+        flex-direction: column;
+        height: auto;
+        perspective: none;
+      }
+
+      .ag-panel {
+        flex: 0 0 auto;
+        width: 100%;
+        height: var(--ag-v-idle);
+        transform: none !important;
+        transition: height var(--ag-dur) var(--ag-ease),
+                    box-shadow 0.35s ease;
+      }
+
+      .ag-panel--active {
+        height: var(--ag-v-active);
+      }
+
+      .ag-panel__media {
+        width: 100%;
+        height: 100%;
+        transform: translate(-50%, -50%) !important;
+        transition: filter var(--ag-dur) var(--ag-ease);
+      }
+
+      .ag-panel__label {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+      }
+
+      .ag-panel__text {
+        font-size: 17px;
+      }
     }
 
     /* ===== CTA Section ===== */
@@ -1392,6 +1668,14 @@
     }
 
     @media (max-width: 480px) {
+      .nav { flex-direction: column; gap: var(--spacing-8); }
+
+      .nav-links {
+        width: 100%;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+      }
+
       .social-links {
         grid-template-columns: 1fr;
       }
@@ -1489,6 +1773,11 @@
 
     /* ===== Responsive ===== */
     @media (max-width: 960px) {
+      .hero-layout {
+        grid-template-columns: minmax(0, 1fr) 240px;
+        gap: var(--spacing-32);
+      }
+
       .project-body {
         grid-template-columns: minmax(0, 1fr);
         gap: 32px;
@@ -1502,15 +1791,36 @@
     }
 
     @media (max-width: 768px) {
-      .about-layout {
+      .hero-layout {
         grid-template-columns: 1fr;
-        gap: 32px;
-        max-width: 560px;
+        gap: var(--spacing-32);
       }
 
-      .about-portrait {
-        width: min(240px, 100%);
-        justify-self: center;
+      .hero-portrait {
+        width: min(280px, 100%);
+      }
+
+      .hero-perspective {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-24);
+        margin-top: var(--spacing-32);
+      }
+
+      .nav {
+        align-items: flex-start;
+        gap: var(--spacing-16);
+      }
+
+      .nav-links {
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        row-gap: var(--spacing-8);
+      }
+
+      .nav-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
       }
 
       .display-headline,
@@ -1572,7 +1882,7 @@
       }
 
       .nav-links {
-        gap: 16px;
+        gap: var(--spacing-8);
       }
     }
 
@@ -1587,6 +1897,12 @@
       .reveal, .reveal-left, .reveal-right, .reveal-scale {
         opacity: 1;
         transform: none;
+        animation: none !important;
+      }
+
+      .section-glow {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .ink-line, .animated-divider {
@@ -1604,12 +1920,13 @@
   <!-- Navigation -->
   <div class="container">
     <nav class="nav">
-      <a href="#" class="nav-wordmark">Ethan</a>
+      <a href="#about" class="nav-wordmark">Ethan</a>
       <ul class="nav-links">
+        <li><a href="#about">关于我</a></li>
         <li><a href="#projects">项目</a></li>
         <li><a href="#process">方法</a></li>
         <li><a href="#articles">文章</a></li>
-        <li><a href="#about">关于</a></li>
+        <li><a href="#portfolio">作品集</a></li>
         <li><a href="#contact">联系</a></li>
       </ul>
     </nav>
@@ -1619,19 +1936,43 @@
     <div class="animated-divider ink-line"></div>
   </div>
 
-  <!-- Hero -->
-  <section class="hero">
+  <!-- Homepage / About: identity, point of view, and project entry points -->
+  <section id="about" class="hero" aria-labelledby="hero-title">
     <div class="container">
-      <h1 class="display-headline hero-enter">
-        <span class="text-highlight">把 AI 做成可用产品</span><span class="typing-cursor"></span>
-      </h1>
-      <p class="section-subhead hero-enter">
-        我是 Ethan，小杯独立开发者、MotoViz 摩视项目主负责人。<br>
-        我通过具体项目实践 AI 产品管理，从用户问题出发，推进产品设计、开发与验证。
-      </p>
-      <div class="btn-group hero-enter">
-        <a href="#projects" class="btn-mint">查看我的项目</a>
-        <a href="#articles" class="btn-sunshine">阅读我的文章</a>
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <h1 id="hero-title" class="display-headline hero-enter">
+            <span class="hero-name">你好，我是 Ethan。</span>
+            <span class="text-highlight">把 AI 做成可用产品</span><span class="typing-cursor" aria-hidden="true"></span>
+          </h1>
+          <p class="hero-role hero-enter">AI 产品经理 · 企业 AI 应用落地 · 独立开发者</p>
+          <div class="hero-bio hero-enter">
+            <p>我从门店督导、区域管理走向产品工作，先后参与零售 AI 巡店、企业 AI 工作系统与教育 AI 应用的设计和落地。</p>
+            <p>我关心 AI 怎样进入真实业务：把一线问题拆成产品需求，用评测验证效果，明确模型、规则与人的分工。同时独立开发 AI 调酒伙伴「小杯」，并以「伊森vibe」记录产品实践。</p>
+          </div>
+          <div class="btn-group hero-enter">
+            <a href="#projects" class="btn-mint">查看我的项目</a>
+            <a href="#articles" class="btn-sunshine">阅读我的文章</a>
+          </div>
+        </div>
+        <figure class="hero-portrait hero-enter">
+          <img src="ethan-natural.jpg" alt="Ethan 的个人照片" width="1080" height="1350" fetchpriority="high" decoding="async">
+          <figcaption><span>Ethan / 伊森vibe</span><span>AI 产品经理</span></figcaption>
+        </figure>
+      </div>
+      <div class="hero-perspective hero-enter" role="group" aria-label="我的产品经验">
+        <div>
+          <h2>从一线业务定义问题</h2>
+          <p>从门店督导到区域管理，把运营经验转化为可执行的产品需求与巡店检查标准。</p>
+        </div>
+        <div>
+          <h2>让 AI 进入业务流程</h2>
+          <p>围绕企业知识库、角色权限与模型评测，推进 AI 客服、内部问答与教育应用落地。</p>
+        </div>
+        <div>
+          <h2>从产品定义到真机交付</h2>
+          <p>独立开发「小杯」，完成产品设计、客户端、后端与 AI 推荐链路，推进 iOS 真机内测。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1661,14 +2002,15 @@
 
   <!-- Projects -->
   <section id="projects">
+    <div class="section-glow section-glow--left" aria-hidden="true"></div>
     <div class="container">
-      <div class="section-header reveal">
-        <div class="step-badge">
+      <div class="section-header">
+        <div class="step-badge reveal">
           <span class="step-badge-num">1</span>
           <span class="step-badge-label">Projects</span>
         </div>
-        <h2 class="section-title">我正在做的产品</h2>
-        <p class="section-desc">从具体场景出发，用可验证的项目证明我能把 AI 做成可用的产品。</p>
+        <h2 class="section-title reveal">我正在做的产品</h2>
+        <p class="section-desc reveal">从具体场景出发，用可验证的项目证明我能把 AI 做成可用的产品。</p>
       </div>
 
       <div class="card-grid project-list">
@@ -1778,14 +2120,15 @@
 
   <!-- Process -->
   <section id="process">
+    <div class="section-glow section-glow--right" aria-hidden="true"></div>
     <div class="container">
-      <div class="section-header reveal">
-        <div class="step-badge">
+      <div class="section-header">
+        <div class="step-badge reveal">
           <span class="step-badge-num">2</span>
           <span class="step-badge-label">Process</span>
         </div>
-        <h2 class="section-title">我如何推进一个 AI 产品</h2>
-        <p class="section-desc">从用户任务到可检查的交付，每一步都有依据。</p>
+        <h2 class="section-title reveal">我如何推进一个 AI 产品</h2>
+        <p class="section-desc reveal">从用户任务到可检查的交付，每一步都有依据。</p>
       </div>
 
       <div class="process-grid stagger">
@@ -1825,14 +2168,15 @@
 
   <!-- Articles -->
   <section id="articles">
+    <div class="section-glow section-glow--mint" aria-hidden="true"></div>
     <div class="container">
-      <div class="section-header reveal">
-        <div class="step-badge">
+      <div class="section-header">
+        <div class="step-badge reveal">
           <span class="step-badge-num">3</span>
           <span class="step-badge-label">Writing</span>
         </div>
-        <h2 class="section-title">项目之外，我也记录思考</h2>
-        <p class="section-desc">把 AI 协作、产品交付与知识管理的实践写下来。</p>
+        <h2 class="section-title reveal">项目之外，我也记录思考</h2>
+        <p class="section-desc reveal">把 AI 协作、产品交付与知识管理的实践写下来。</p>
       </div>
 
       <div class="article-grid stagger">
@@ -1861,26 +2205,127 @@
     <div class="animated-divider ink-line"></div>
   </div>
 
-  <!-- About -->
-  <section id="about">
+  <!-- Portfolio -->
+  <section id="portfolio">
+    <div class="section-glow section-glow--left" aria-hidden="true"></div>
     <div class="container">
-      <div class="section-header reveal">
-        <div class="step-badge">
+      <div class="section-header">
+        <div class="step-badge reveal">
           <span class="step-badge-num">4</span>
-          <span class="step-badge-label">About</span>
+          <span class="step-badge-label">Portfolio</span>
         </div>
-        <h2 class="section-title">关于我</h2>
-        <p class="section-desc">独立开发者与项目主负责人，用项目积累 AI 产品管理经验。</p>
+        <h2 class="section-title reveal">作品集</h2>
+        <p class="section-desc reveal">小杯、MotoViz、笔迹 ByTrace、Lilovideo 与 TO-DO Panel 的实际界面与资产。</p>
       </div>
 
-      <div class="about-layout">
-        <img class="about-portrait" src="ethan-natural.jpg" alt="Ethan 的个人照片" width="1080" height="1350" loading="lazy" decoding="async">
-        <div class="about-content reveal">
-        <p>我是 Ethan，正在通过独立开发与团队项目积累 AI 产品管理经验。</p>
-        <p>我喜欢把想法做成可以操作、可以检验的东西：既关心用户看到的界面，也愿意深入知识结构、接口和失败场景，理解一个产品为什么有效、在哪里还不可靠。</p>
-        <p>目前，我独立开发小杯，并担任 MotoViz 摩视的项目主负责人。我也以"伊森vibe"的名字写作，记录 AI 协作、产品交付与个人知识管理的思考。</p>
-        <p>这个网站会持续收录我的产品、实验和文章，让每次尝试都有可以回看的过程。</p>
+      <div class="reveal">
+        <div class="accordion-gallery" data-accordion-gallery data-default-index="0" data-expand-ratio="0.42" data-tilt="8" data-parallax="0.5" role="group" aria-label="作品集图片">
+          <a class="ag-panel" href="#projects" aria-label="小杯 · 我的吧台，查看小杯项目详情">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/xiaobei/bar-home-development.png" alt="小杯「我的吧台」界面：布偶猫、展开的酒柜与材料推荐" style="object-position: 50% 30%;" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">小杯 · 我的吧台</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="#projects" aria-label="小杯 · 跟做教学，查看小杯项目详情">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/xiaobei/guided-making-prototype.png" alt="小杯跟做教学原型：今晚做杯金汤力，材料与用量分步提示" style="object-position: 50% 12%;" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">小杯 · 跟做教学</span>
+            </span>
+          </a>
+
+          <a class="ag-panel ag-panel--light ag-panel--matte" href="#projects" aria-label="小杯 · 布偶形象，查看小杯项目详情">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/xiaobei/ragdoll-idle.png" alt="小杯的布偶猫像素形象：奶白色毛发、灰褐色耳尾和蓝眼睛" style="object-position: 50% 50%; image-rendering: pixelated;" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">小杯 · 布偶形象</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="#motoviz" aria-label="MotoViz · 改装工作台，查看 MotoViz 项目详情">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/motoviz/home-v37.jpg" alt="MotoViz 工作台首页：改装展示、故障诊断与配件查询三个入口" style="object-position: 50% 45%;" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">MotoViz · 改装工作台</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="#motoviz" aria-label="MotoViz · 开场动画，查看 MotoViz 项目详情">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/motoviz/opening-v37-poster.png" alt="MotoViz 开场动画画面：弧形排列的改装车型海报" style="object-position: 50% 50%;" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">MotoViz · 开场动画</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="https://github.com/moronfranklyn-lab/bytrace" target="_blank" rel="noopener" aria-label="笔迹 ByTrace · 工作台，打开 GitHub 仓库（新标签页）">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/bytrace/workbench.png" alt="笔迹 ByTrace 工作台：只给一段思路，用你喜欢的博主风格写出有深度的文章" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">笔迹 ByTrace · 工作台</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="https://github.com/moronfranklyn-lab/lilovideo" target="_blank" rel="noopener" aria-label="Lilovideo · 创作台，打开 GitHub 仓库（新标签页）">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/lilovideo/home.jpg" alt="Lilovideo 创作台：创作类型与参数条、创意输入框和灵感示例卡片" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">Lilovideo · 创作台</span>
+            </span>
+          </a>
+
+          <a class="ag-panel" href="https://github.com/moronfranklyn-lab/panel-xiaobei" target="_blank" rel="noopener" aria-label="TO-DO Panel · 贴顶工作台，打开 GitHub 仓库（新标签页）">
+            <span class="ag-panel__frame">
+              <span class="ag-panel__media">
+                <img src="assets/projects/todo-panel/notch-workbench.jpg" alt="TO-DO Panel 贴顶工作台：待办、笔记、链接四个入口，番茄钟、当前窗口、快速录音与镜子" loading="lazy" decoding="async">
+              </span>
+              <span class="ag-panel__overlay" aria-hidden="true"></span>
+            </span>
+            <span class="ag-panel__label" aria-hidden="true">
+              <span class="ag-panel__bar"></span>
+              <span class="ag-panel__text">TO-DO Panel · 贴顶工作台</span>
+            </span>
+          </a>
         </div>
+
+        <p class="gallery-hint">悬停展开，点击进入项目或仓库</p>
       </div>
     </div>
   </section>
@@ -1891,6 +2336,7 @@
 
   <!-- CTA -->
   <section id="contact" class="cta-section">
+    <div class="section-glow" aria-hidden="true"></div>
     <div class="container">
       <div class="cta-avatar reveal-scale">E</div>
       <h2 class="display-headline reveal">
@@ -1953,8 +2399,21 @@
         rootMargin: '0px 0px -30px 0px'
       });
 
+      // Section entrance cascade (adapted from pirsch.io):
+      // inside each section the revealable blocks step in 90ms apart,
+      // badge → title → lede → content, so a section reads as one gesture.
+      const CASCADE_STEP = 90;
+      const CASCADE_MAX = 8;
+
+      document.querySelectorAll('section').forEach(section => {
+        section.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
+          .forEach((el, index) => {
+            el.style.setProperty('--reveal-delay', Math.min(index, CASCADE_MAX) * CASCADE_STEP + 'ms');
+          });
+      });
+
       document.querySelectorAll(
-        '.reveal, .reveal-left, .reveal-right, .reveal-scale, .ink-line, .animated-divider, .step-badge'
+        '.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-glow, .ink-line, .animated-divider, .step-badge'
       ).forEach(el => observer.observe(el));
 
       // Add smooth scroll for anchor links
@@ -1963,8 +2422,179 @@
           const target = document.querySelector(this.getAttribute('href'));
           if (target) {
             e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
           }
+        });
+      });
+    })();
+  </script>
+
+  <!-- Accordion gallery -->
+  <script>
+    (function() {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var stackedQuery = window.matchMedia('(max-width: 768px)');
+      var noHoverQuery = window.matchMedia('(hover: none)');
+
+      function num(el, attr, fallback) {
+        var value = parseFloat(el.getAttribute(attr));
+        return isNaN(value) ? fallback : value;
+      }
+
+      document.querySelectorAll('[data-accordion-gallery]').forEach(function(root) {
+        var panels = Array.prototype.slice.call(root.querySelectorAll('.ag-panel'));
+        if (!panels.length) return;
+
+        var count = panels.length;
+        var expandRatio = Math.min(Math.max(num(root, 'data-expand-ratio', 0.52), 0.2), 0.9);
+        var tilt = num(root, 'data-tilt', 8);
+        var parallax = num(root, 'data-parallax', 0.5);
+        var grow = count > 1 ? (expandRatio * (count - 1)) / (1 - expandRatio) : 1;
+
+        var active = parseInt(root.getAttribute('data-default-index'), 10);
+        if (isNaN(active)) active = 0;
+        active = Math.min(Math.max(active, 0), count - 1);
+
+        var mediaSize = 320;
+        var firstRun = true;
+
+        function isStacked() {
+          return stackedQuery.matches;
+        }
+
+        function measure() {
+          if (isStacked()) {
+            root.style.removeProperty('--ag-media-size');
+            return;
+          }
+
+          var width = root.getBoundingClientRect().width;
+          if (!width) return;
+
+          var gap = parseFloat(window.getComputedStyle(root).columnGap) || 0;
+          var usable = Math.max(width - gap * (count - 1), 120);
+          mediaSize = Math.max(140, usable * expandRatio * 1.22);
+          root.style.setProperty('--ag-media-size', mediaSize + 'px');
+        }
+
+        function apply(animate) {
+          var stacked = isStacked();
+          var animated = animate && !reduceMotion.matches;
+
+          if (!animated) root.style.setProperty('--ag-dur', '0s');
+
+          panels.forEach(function(panel, i) {
+            var isActive = i === active;
+            panel.classList.toggle('ag-panel--active', isActive);
+            if (isActive) {
+              panel.setAttribute('aria-current', 'true');
+            } else {
+              panel.removeAttribute('aria-current');
+            }
+
+            if (stacked) {
+              panel.style.flexGrow = '';
+              panel.style.transform = '';
+            } else {
+              panel.style.flexGrow = isActive ? grow : 1;
+              panel.style.transform = isActive
+                ? 'rotateY(0deg)'
+                : 'rotateY(' + (i < active ? tilt : -tilt) + 'deg)';
+            }
+
+            var media = panel.querySelector('.ag-panel__media');
+            if (!media) return;
+
+            if (stacked) {
+              media.style.transform = '';
+              return;
+            }
+
+            var drift = Math.max(-1.5, Math.min(1.5, active - i));
+            var shift = isActive ? 0 : drift * parallax * mediaSize * 0.06;
+            media.style.transform = 'translate(-50%, -50%) translateX(' + shift.toFixed(2) + 'px)';
+          });
+
+          if (!animated) {
+            window.requestAnimationFrame(function() {
+              root.style.removeProperty('--ag-dur');
+            });
+          }
+        }
+
+        function setActive(index) {
+          var next = (index % count + count) % count;
+          if (next === active) return;
+          active = next;
+          apply(true);
+        }
+
+        panels.forEach(function(panel, i) {
+          if (!noHoverQuery.matches) {
+            panel.addEventListener('mouseenter', function() {
+              setActive(i);
+            });
+          }
+
+          panel.addEventListener('focus', function() {
+            setActive(i);
+          });
+
+          panel.addEventListener('click', function(event) {
+            if (i !== active) {
+              event.preventDefault();
+              setActive(i);
+            }
+          });
+
+          panel.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+              event.preventDefault();
+              panels[(i + 1) % count].focus();
+            } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+              event.preventDefault();
+              panels[(i - 1 + count) % count].focus();
+            }
+          });
+        });
+
+        function refresh() {
+          measure();
+          apply(!firstRun);
+          firstRun = false;
+        }
+
+        refresh();
+
+        if (window.ResizeObserver) {
+          var pending = false;
+          var observer = new ResizeObserver(function() {
+            if (pending) return;
+            pending = true;
+            window.requestAnimationFrame(function() {
+              pending = false;
+              measure();
+              apply(false);
+            });
+          });
+          observer.observe(root);
+        } else {
+          window.addEventListener('resize', function() {
+            measure();
+            apply(false);
+          });
+        }
+
+        if (stackedQuery.addEventListener) {
+          stackedQuery.addEventListener('change', function() {
+            measure();
+            apply(false);
+          });
+        }
+
+        window.addEventListener('load', function() {
+          measure();
+          apply(false);
         });
       });
     })();
