@@ -1532,6 +1532,31 @@
       }
     }
 
+    /* Complete product screenshots with a separate readable caption. */
+    .ag-panel--product { background: var(--color-card-bg); }
+    .ag-panel__text { opacity: 1; transform: none; font-size: var(--text-body-sm); }
+    .ag-panel:not(.ag-panel--active) .ag-panel__bar { display: none; }
+    .ag-panel--product .ag-panel__text { text-shadow: none; }
+    .ag-panel--product:not(.ag-panel--active) .ag-panel__media img { object-fit: cover; }
+    .ag-panel--product .ag-panel__media {
+      width: 100%;
+      height: calc(100% - 80px);
+      top: calc(50% - 40px);
+      transform: translate(-50%, -50%) !important;
+      padding: var(--spacing-24);
+    }
+    .ag-panel--product .ag-panel__media img { object-fit: contain; }
+    .ag-panel--product .ag-panel__label,
+    .ag-panel--product .ag-panel__text { color: var(--color-ink); }
+    .ag-panel--xiaobei .ag-panel__media img { border-radius: var(--radius-images); }
+    .knowence-links { display: flex; flex-wrap: wrap; gap: var(--spacing-16); margin-top: var(--spacing-8); }
+    #knowence .project-media--wide a { display: block; height: auto; padding: 0; }
+    #knowence .project-media--wide img { width: 100%; height: auto; max-height: none; object-fit: contain; }
+    #knowence .project-media a:hover img { transform: none; }
+    @media (max-width: 768px) {
+      .ag-panel--product.ag-panel--active { height: 420px; }
+    }
+
     /* ===== CTA Section ===== */
     .cta-section {
       text-align: center;
@@ -2015,7 +2040,7 @@
 
       <div class="card-grid project-list">
         <!-- 小杯 -->
-        <div class="card reveal">
+        <div class="card reveal" id="xiaobei">
           <div class="card-tag">
             <span class="dot dot--yellow"></span>
             独立开发 · iPhone 应用
@@ -2065,49 +2090,33 @@
           </div>
         </div>
 
-        <!-- MotoViz -->
-        <div class="card reveal" id="motoviz">
-          <div class="card-tag">
-            <span class="dot dot--green"></span>
-            项目主负责人 · 团队 MVP
-          </div>
-          <h3>MotoViz 摩视</h3>
+        <!-- Knowence -->
+        <div class="card reveal" id="knowence">
+          <div class="card-tag"><span class="dot dot--green"></span>企业 AI 工作系统 · 开源二次开发</div>
+          <h3>知微 Knowence</h3>
           <figure class="project-media project-media--wide">
-            <video controls muted playsinline preload="none" poster="assets/projects/motoviz/opening-v37-poster.png" width="1920" height="1080" aria-label="MotoViz v37 开场动画：摩托车海报随弧形飘带运动，无声">
-              <source src="assets/projects/motoviz/opening-v37.mp4" type="video/mp4">
-              <a href="assets/projects/motoviz/opening-v37.mp4">查看 MotoViz 开场动画</a>
-            </video>
-            <figcaption>MotoViz · v37 开场动画 · 6 秒 · 无声 · 点击播放</figcaption>
+            <a href="https://moronfranklyn-lab.github.io/knowence/" target="_blank" rel="noopener" aria-label="查看知微官网（新标签页）">
+              <img src="assets/projects/knowence/chat-with-citations.png" alt="知微工作台：本地模型回答企业知识问题，并附带原文引用" loading="lazy" decoding="async">
+            </a>
+            <figcaption>知微 · 本地知识问答与原文引用 · 实际运行界面</figcaption>
           </figure>
           <div class="project-body project-body--text">
-          <div class="project-copy">
-          <p>面向摩托车改装门店，探索用改装视觉预览辅助沟通，用配件与故障知识检索辅助查询。</p>
-          <p>我负责推动产品方向与团队协作，参与前端体验，并对最终产品验收把关。工作重点包括明确数据范围、对齐共享接口，以及检查模块连接后是否真正完成用户任务。</p>
-          </div>
-          <div class="project-copy">
-          <div class="card-label">一个关键决策</div>
-          <div class="card-highlight">
-            <p>展示改装效果与判断配件兼容性，需要不同的证据。我关注车型、年份与配件匹配是否有依据，也检查引用、反馈和异常处理，避免视觉效果被误读为实际适配结论。</p>
-          </div>
-          <div class="card-capabilities">
-            <span class="capability-tag">范围判断</span>
-            <span class="capability-tag">跨模块协作</span>
-            <span class="capability-tag">交互设计</span>
-            <span class="capability-tag">交付评审</span>
-          </div>
-          <div class="card-status">
-            <span class="status-dot"></span>
-            团队 MVP 开发中
-          </div>
-          <div style="margin-top: 8px; display: flex; gap: 16px;">
-            <a href="https://github.com/MN0709/MotoViz" class="card-link" target="_blank" rel="noopener">
-              团队仓库 →
-            </a>
-            <a href="https://github.com/MN0709/MotoViz/pull/28" class="card-link" target="_blank" rel="noopener">
-              前端原型提案 →
-            </a>
-          </div>
-          </div>
+            <div class="project-copy">
+              <p>把企业资料变成可追溯的答案、可执行的任务、可审计的操作。面向资料分散、数据不能出内网、AI 使用权限难管理的企业场景。</p>
+              <p>我基于 WeKnora（MIT）推进产品改造，完成品牌与工作台体验、本地模型部署、平台与推理节点分离，以及检索链路的实测与评测。统一知识库、Agent 与角色权限沿用并整合上游能力。</p>
+            </div>
+            <div class="project-copy">
+              <div class="card-label">一个关键决策</div>
+              <div class="card-highlight"><p>让检索、重排、向量化与生成都能在内网完成。通过自建评测集定位重排分数与默认阈值不匹配的问题，先核查配置与证据，再判断是否需要更换模型。</p></div>
+              <div class="card-capabilities">
+                <span class="capability-tag">企业知识库</span><span class="capability-tag">私有化部署</span><span class="capability-tag">权限治理</span><span class="capability-tag">效果评测</span>
+              </div>
+              <div class="card-status"><span class="status-dot"></span>本地问答链路已实测 · 更多能力持续验证</div>
+              <div class="knowence-links">
+                <a href="https://moronfranklyn-lab.github.io/knowence/" class="card-link" target="_blank" rel="noopener">访问知微官网 →</a>
+                <a href="https://github.com/moronfranklyn-lab/knowence" class="card-link" target="_blank" rel="noopener">源码与验证记录 →</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2156,7 +2165,7 @@
             <span class="step-badge-label">Deliver</span>
           </div>
           <h3>用可检查的交付推进协作</h3>
-          <p>在 MotoViz 中，通过接口约定、评审问题与后续验证，让团队对"完成"的理解逐步一致。</p>
+          <p>在知微中，区分上游能力与自己的改造范围，用部署记录、评测结果与问题归因，让交付状态有据可查。</p>
         </div>
       </div>
     </div>
@@ -2215,74 +2224,22 @@
           <span class="step-badge-label">Portfolio</span>
         </div>
         <h2 class="section-title reveal">作品集</h2>
-        <p class="section-desc reveal">小杯、MotoViz、笔迹 ByTrace、Lilovideo 与 TO-DO Panel 的实际界面与资产。</p>
+        <p class="section-desc reveal">从个人生活到企业工作，每个产品都有自己的使用现场。</p>
       </div>
 
       <div class="reveal">
         <div class="accordion-gallery" data-accordion-gallery data-default-index="0" data-expand-ratio="0.42" data-tilt="8" data-parallax="0.5" role="group" aria-label="作品集图片">
-          <a class="ag-panel" href="#projects" aria-label="小杯 · 我的吧台，查看小杯项目详情">
-            <span class="ag-panel__frame">
-              <span class="ag-panel__media">
-                <img src="assets/projects/xiaobei/bar-home-development.png" alt="小杯「我的吧台」界面：布偶猫、展开的酒柜与材料推荐" style="object-position: 50% 30%;" loading="lazy" decoding="async">
-              </span>
-              <span class="ag-panel__overlay" aria-hidden="true"></span>
-            </span>
-            <span class="ag-panel__label" aria-hidden="true">
-              <span class="ag-panel__bar"></span>
-              <span class="ag-panel__text">小杯 · 我的吧台</span>
-            </span>
+          <a class="ag-panel ag-panel--product ag-panel--xiaobei" href="#xiaobei" aria-label="小杯 · AI 调酒伙伴，查看项目详情">
+            <span class="ag-panel__frame"><span class="ag-panel__media">
+              <img src="assets/projects/xiaobei/bar-home-development.png" alt="小杯完整吧台界面：角色陪伴、酒柜与材料推荐" loading="lazy" decoding="async">
+            </span></span>
+            <span class="ag-panel__label"><span class="ag-panel__bar"></span><span class="ag-panel__text">小杯 · AI 调酒伙伴</span></span>
           </a>
-
-          <a class="ag-panel" href="#projects" aria-label="小杯 · 跟做教学，查看小杯项目详情">
-            <span class="ag-panel__frame">
-              <span class="ag-panel__media">
-                <img src="assets/projects/xiaobei/guided-making-prototype.png" alt="小杯跟做教学原型：今晚做杯金汤力，材料与用量分步提示" style="object-position: 50% 12%;" loading="lazy" decoding="async">
-              </span>
-              <span class="ag-panel__overlay" aria-hidden="true"></span>
-            </span>
-            <span class="ag-panel__label" aria-hidden="true">
-              <span class="ag-panel__bar"></span>
-              <span class="ag-panel__text">小杯 · 跟做教学</span>
-            </span>
-          </a>
-
-          <a class="ag-panel ag-panel--light ag-panel--matte" href="#projects" aria-label="小杯 · 布偶形象，查看小杯项目详情">
-            <span class="ag-panel__frame">
-              <span class="ag-panel__media">
-                <img src="assets/projects/xiaobei/ragdoll-idle.png" alt="小杯的布偶猫像素形象：奶白色毛发、灰褐色耳尾和蓝眼睛" style="object-position: 50% 50%; image-rendering: pixelated;" loading="lazy" decoding="async">
-              </span>
-              <span class="ag-panel__overlay" aria-hidden="true"></span>
-            </span>
-            <span class="ag-panel__label" aria-hidden="true">
-              <span class="ag-panel__bar"></span>
-              <span class="ag-panel__text">小杯 · 布偶形象</span>
-            </span>
-          </a>
-
-          <a class="ag-panel" href="#motoviz" aria-label="MotoViz · 改装工作台，查看 MotoViz 项目详情">
-            <span class="ag-panel__frame">
-              <span class="ag-panel__media">
-                <img src="assets/projects/motoviz/home-v37.jpg" alt="MotoViz 工作台首页：改装展示、故障诊断与配件查询三个入口" style="object-position: 50% 45%;" loading="lazy" decoding="async">
-              </span>
-              <span class="ag-panel__overlay" aria-hidden="true"></span>
-            </span>
-            <span class="ag-panel__label" aria-hidden="true">
-              <span class="ag-panel__bar"></span>
-              <span class="ag-panel__text">MotoViz · 改装工作台</span>
-            </span>
-          </a>
-
-          <a class="ag-panel" href="#motoviz" aria-label="MotoViz · 开场动画，查看 MotoViz 项目详情">
-            <span class="ag-panel__frame">
-              <span class="ag-panel__media">
-                <img src="assets/projects/motoviz/opening-v37-poster.png" alt="MotoViz 开场动画画面：弧形排列的改装车型海报" style="object-position: 50% 50%;" loading="lazy" decoding="async">
-              </span>
-              <span class="ag-panel__overlay" aria-hidden="true"></span>
-            </span>
-            <span class="ag-panel__label" aria-hidden="true">
-              <span class="ag-panel__bar"></span>
-              <span class="ag-panel__text">MotoViz · 开场动画</span>
-            </span>
+          <a class="ag-panel ag-panel--product" href="#knowence" aria-label="知微 Knowence · 企业 AI 工作系统，查看项目详情">
+            <span class="ag-panel__frame"><span class="ag-panel__media">
+              <img src="assets/projects/knowence/workbench-new-chat.png" alt="知微企业 AI 工作台：知识问答与任务执行入口" loading="lazy" decoding="async">
+            </span></span>
+            <span class="ag-panel__label"><span class="ag-panel__bar"></span><span class="ag-panel__text">知微 · 企业 AI 工作系统</span></span>
           </a>
 
           <a class="ag-panel" href="https://github.com/moronfranklyn-lab/bytrace" target="_blank" rel="noopener" aria-label="笔迹 ByTrace · 工作台，打开 GitHub 仓库（新标签页）">
